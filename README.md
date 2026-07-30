@@ -73,3 +73,51 @@ Each expense transaction is scored against four rules:
 Scores are capped at 100. Transactions scoring 40+ are flagged for review, with the specific triggered reasons shown to the user.
 
 ## Project Structure
+ledgerly/
+├── backend/ Express API, MongoDB models, auth middleware, risk engine
+└── frontend/ React app — dashboard, history, goals, trends, members
+## Running Locally
+
+### Backend
+```bash
+cd backend
+npm install
+```
+Create a `.env` file inside `backend/`:
+
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+PORT=5000
+
+```bash
+node index.js
+```
+
+### Frontend
+```bash
+cd frontend
+npm install
+npm start
+```
+Update `frontend/src/api/axios.js` if your backend runs on a different port/URL.
+
+## API Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| POST | /api/auth/signup | Create account |
+| POST | /api/auth/login | Login, returns JWT |
+| GET | /api/transactions | Get all transactions |
+| POST | /api/transactions | Add transaction (runs risk engine) |
+| PATCH | /api/transactions/:id/review | Mark flagged transaction reviewed |
+| DELETE | /api/transactions/:id | Delete transaction |
+| GET | /api/goals | Get savings goals |
+| POST | /api/goals | Create goal |
+| GET | /api/dashboard/summary | Balance, spending breakdown, goals |
+| GET | /api/dashboard/trends | Monthly trends, predictions, recurring expenses |
+| POST | /api/accounts/invite | Invite a user to shared account |
+| GET | /api/accounts/members | List account members |
+
+## What I Learned
+
+Building Ledgerly meant working across the full stack — schema design, authentication, API design, a custom detection algorithm, and UI — and debugging real issues that don't show up in tutorials: DNS/network failures, stale sessions after a schema migration, duplicate routes, and reworking the data model when requirements changed (moving from single-user to shared multi-user accounts).
